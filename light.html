@@ -49,7 +49,8 @@
 </div>
 </div>
 
-<div id="music"></div>
+<iframe id="music" type="text/html" width="200" height="200"
+  src="http://www.youtube.com/embed/videoseries?enablejsapi=1&origin=http://heirofnorton.github.io&list=PLKS-bEmP6ExcllWqUhG8UuzCmQRvupLsZ&listtype=playlist"></iframe>
 
 <script>
   // This code loads the IFrame Player API code asynchronously.
@@ -78,8 +79,6 @@
     });
     
     music = new YT.Player('music', {
-      height: '200',
-      width: '200',
       events: {
         'onReady': onMusicReady
       }
@@ -89,7 +88,6 @@
 
   function onMusicReady(event) {
     targ = event.target;
-    targ.loadPlaylist('PLKS-bEmP6ExcllWqUhG8UuzCmQRvupLsZ');
     targ.setPlaybackQuality('small');
     targ.setLoop(true);
     targ.setShuffle(true);
