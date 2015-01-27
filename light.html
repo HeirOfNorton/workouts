@@ -155,6 +155,8 @@
   {videoId: "", startSeconds: 0, endSeconds: 0},
   ];
   var warmupList=[
+  {videoId: "", startSeconds: 0, endSeconds: 0},
+  {videoId: "", startSeconds: 0, endSeconds: 0},
   ];
   
   function getVideo(type) {
@@ -163,7 +165,7 @@
       list = cooldownList;
     }
     else if (type=="warmup") {
-      list = warmuplist;
+      list = warmupList;
     }
     var idx = Math.floor(Math.random() * list.length)
     return list[idx];
