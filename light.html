@@ -31,13 +31,7 @@
       width: 853px;
       height: 480px;
     }
-    
-    #music {
-      width: 200px;
-      height: 200px;
-      position: absolute;
-      margin-left: 10000px;
-    }
+
   </style>
 </head>
 <body>
@@ -48,11 +42,6 @@
 </div>
 </div>
 </div>
-<!-- 
-<iframe id="music" type="text/html" width="200" height="200"
-  src="http://www.youtube.com/embed/videoseries?enablejsapi=1&list=PL5wotU8ZcY2jVy3jPpKe8n49ajxsYuMnr&listtype=playlist"></iframe>
-
- -->
 
 <script>
   // This code loads the IFrame Player API code asynchronously.
@@ -66,7 +55,6 @@
   var nextVidType;
 
   var player;
-  var music;
   function onYouTubeIframeAPIReady() {
     
     nextVid = getVideo('warmup');
@@ -82,26 +70,10 @@
       }
     });
     
-  /*  music = new YT.Player('music', {
-      events: {
-        'onReady': onMusicReady
-      }
-    
-    }); */
   }
 
-  function onMusicReady(event) {
-    music.setPlaybackQuality('small');
-    music.setLoop(true);
-    music.setShuffle(true);
-    music.setVolume(100);
-    music.nextVideo();
-    music.playVideo();
-  }
 
-  // 4. The API will call this function when the video player is ready.
   function onPlayerReady(event) {
-    player.setVolume(50);
     player.playVideo();
   }
   
@@ -110,11 +82,7 @@
   function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.ENDED) {
       if (nextVid){
-        if (nextVidType == 'done'){
-//          music.stopVideo();
-          player.setVolume(100);
-        }
-      
+
         player.loadVideoById(nextVid);
         
         switch(nextVidType) {
