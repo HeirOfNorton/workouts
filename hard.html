@@ -31,6 +31,7 @@
       width: 853px;
       height: 480px;
     }
+
   </style>
 </head>
 <body>
@@ -51,11 +52,13 @@
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
   var nextVid;
+  var nextVidType;
 
   var player;
   function onYouTubeIframeAPIReady() {
     
-    var nextVid = getVideo('workout');
+    nextVid = getVideo('warmup');
+    nextVidType = 'countdown-workout';
     
     player = new YT.Player('player', {
       height: '480',
@@ -66,40 +69,85 @@
         'onStateChange': onPlayerStateChange
       }
     });
+    
   }
 
-  // 4. The API will call this function when the video player is ready.
+
   function onPlayerReady(event) {
-    event.target.playVideo();
+    player.playVideo();
   }
-
+  
+  var countdown = {videoId: 'rzfmZC3kg3M'};
+  var fanfare = {videoId: 'kvpyz6MUa1w'};
   function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.ENDED) {
       if (nextVid){
-        player.loadVideoById(nextVid.videoId, nextVid.startAt);
-        if (nextVid.cooldown) {
-          nextVid = getVideo('cooldown');
-        }
-        else {
-          nextVid = false;
+
+        player.loadVideoById(nextVid);
+        
+        switch(nextVidType) {
+          case 'workout':
+            nextVid = getVideo('workout');
+            nextVidType = 'countdown-cooldown';
+            break;
+          case 'cooldown':
+            nextVid = getVideo('cooldown');
+            nextVidType = 'fanfare';
+            break;
+          case 'countdown-workout':
+            nextVid = countdown;
+            nextVidType = 'workout';
+            break;
+          case 'countdown-cooldown':
+            nextVid = countdown;
+            nextVidType = 'cooldown';
+            break;
+          case 'fanfare':
+            nextVid = fanfare;
+            nextVidType = 'done';
+            break;
+          case 'done':
+            nextVid = false;
+            break;
         }
       }
     }
   }
   
   var videoList = [
-  {videoId: "", startAt: 0, cooldown: true},
-  {videoId: "", startAt: 0, cooldown: true},
+  {videoId: "", startSeconds: 0, endSeconds: 0},
+  {videoId: "", startSeconds: 0, endSeconds: 0},
   ];
   var cooldownList = [
-  {videoId: "", startAt: 0},
-  {videoId: "", startAt: 0},
+    {videoId: "q5FVyhTl5Ys", startSeconds: 18, endSeconds: 210},
+    {videoId: "XewzQ9MRDh8", startSeconds: 25, endSeconds: 300},
+    {videoId: "ar3BGF8do7I", startSeconds: 26, endSeconds: 333},
+    {videoId: "u5Hr3rNUZ24", startSeconds: 22, endSeconds: 282},
+    {videoId: "i9u-svNHgao", startSeconds: 22, endSeconds: 310},
+    {videoId: "OOausTRkBic", startSeconds: 65, endSeconds: 388},
+    {videoId: "M-p5TJmVDI4", startSeconds: 90, endSeconds: 363},
+    {videoId: "pMSTdnkNUJY", startSeconds: 0, endSeconds: 300},
+    {videoId: "-jS_rCnDCp8", startSeconds: 52, endSeconds: 293},
+  ];
+  var warmupList=[
+    {videoId: "iKL1TvpU-Kc", startSeconds: 22, endSeconds: 137},
+    {videoId: "M_bt48DjzDk", startSeconds: 11, endSeconds: 133},
+    {videoId: "TJTeuNOPJVo", startSeconds: 56, endSeconds: 177},
+    {videoId: "23I9pVBT_aI", startSeconds: 13, endSeconds: 107},
+    {videoId: "ns8JUSLod1I", startSeconds: 17, endSeconds: 145},
+    {videoId: "ns8JUSLod1I", startSeconds: 145, endSeconds: 276},
+    {videoId: "tdLs7JZVaVg", startSeconds: 0, endSeconds: 120},
+    {videoId: "eyOa7V71cBE", startSeconds: 25, endSeconds: 145},
+    {videoId: "-2-G6Ig5EXg", startSeconds: 6, endSeconds: 127},
   ];
   
   function getVideo(type) {
     var list = videoList;
     if(type=="cooldown"){
       list = cooldownList;
+    }
+    else if (type=="warmup") {
+      list = warmupList;
     }
     var idx = Math.floor(Math.random() * list.length)
     return list[idx];
